@@ -44,7 +44,7 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-  GD
+  GD 2.0.1 or greater
 
 
 AUTHOR

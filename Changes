@@ -1,5 +1,8 @@
 Revision history for GD-3DBarGrapher
 
+0.9.1   17 May 2007
+        Resolved ommission in makefile.PL
+        
 0.9.0   16 May 2007
         Initial Release
 
