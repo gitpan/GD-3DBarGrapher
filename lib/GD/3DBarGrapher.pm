@@ -20,7 +20,7 @@ use GD;
 require Exporter;
 @GD::3DBarGrapher::ISA = qw(Exporter);
 @GD::3DBarGrapher::EXPORT_OK = qw(creategraph);
-$GD::3DBarGrapher::VERSION = '0.9.1';
+$GD::3DBarGrapher::VERSION = '0.9.2';
 
 # -----------------------------------------------------------------------------
 # MAIN ROUTINE
