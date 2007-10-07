@@ -1,5 +1,8 @@
 Revision history for GD-3DBarGrapher
 
+0.9.3   07 October 2007
+        Previous version wasn't gzipped inside tarball!!
+
 0.9.2   08 June 2007
         Fixed permissions problem in tarball!
         
