@@ -1,5 +1,5 @@
 name:         GD-3DBarGrapher
-version:      0.9.4
+version:      0.9.5
 version_from: lib/GD/3DBarGrapher.pm
 installdirs:  site
 requires:

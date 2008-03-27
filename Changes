@@ -1,5 +1,8 @@
 Revision history for GD-3DBarGrapher
 
+0.9.5   27 March 2008
+        YAML file fix
+        
 0.9.4   26 March 2008
         Removed gap behind bars/columns
         Small change to makefile for EU:MM benefit
