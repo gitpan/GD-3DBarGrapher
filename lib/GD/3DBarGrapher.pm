@@ -6,7 +6,7 @@ package GD::3DBarGrapher;
 #
 # http://www.creationfactor.net/software.htm
 #
-# Copyright (c) 2007 S.I.Warhurst
+# Copyright (c) 2008 S.I.Warhurst
 #
 # See DOCUMENTATION at end of file
 #
@@ -194,12 +194,10 @@ sub creategraph {
         my $keyn = scalar @data;
         my $spacing = ($dims{plotwidth} - $conf{iplotpad} - $conf{iplotpad} - $dims{floor} - ($keyn * $conf{bwidth})) / ($keyn-1);
         my $barpos = $plotleftedge + $conf{iplotpad};
-        my ($bwidby2,$bwidby3,$bwidby4,$floorby2,$floorby075) = (
+        my ($bwidby2,$bwidby3,$bwidby4) = (
         	int($conf{bwidth}/2),
         	int($conf{bwidth}/3),
-        	int($conf{bwidth}/4),
-        	int($dims{floor}/2),
-        	int($dims{floor}*0.75),
+        	int($conf{bwidth}/4)
         );
         my $floordepth = sprintf("%.0f",sqrt(($bwidby2*$bwidby2)/2));
         foreach my $d(@data){
@@ -216,22 +214,22 @@ sub creategraph {
         	# draw columns
         	if($conf{bstyle} eq "column"){
         		# draw bottom arc
-        		$image->filledArc($barpos+$bwidby2,$ypos+$dims{plotheight}+$floorby2,$conf{bwidth},$bwidby2,0,180,$colbar);
+        		$image->filledArc($barpos+$bwidby2,$ypos+$dims{plotheight}+$bwidby4,$conf{bwidth},$bwidby2,0,180,$colbar);
         		# draw bar
-        		my $centretopy = $ypos + ($dims{plotheight} - (($dims{plotheight}/$dims{range})*$d->[1])) + $bwidby4 + ($floorby2/2);
-        		$image->filledRectangle($barpos,$centretopy,$barpos+$conf{bwidth}-1,$ypos+$dims{plotheight}+$floorby2,$colbar);
+        		my $centretopy = $ypos + ($dims{plotheight} - (($dims{plotheight}/$dims{range})*$d->[1])) + $bwidby4;
+        		$image->filledRectangle($barpos,$centretopy,$barpos+$conf{bwidth}-1,$ypos+$dims{plotheight}+$bwidby4,$colbar);
         		if($conf{bcolumnfill} eq "gradient"){
-        			gradientfill($colbar,$centretopy,$barpos+$conf{bwidth}-1,$ypos+$dims{plotheight}+$floorby2,$barpos+$conf{bwidth}-1,$conf{bwidth},'column');
+        			gradientfill($colbar,$centretopy,$barpos+$conf{bwidth}-1,$ypos+$dims{plotheight}+$bwidby4,$barpos+$conf{bwidth}-1,$conf{bwidth},'column');
         		}
         		# draw top ellipse
         		$image->filledEllipse($barpos+$bwidby2,$centretopy,$conf{bwidth},$bwidby2,$shadetop);
-        		$coords = int($barpos) . "," . int($centretopy-$bwidby4) . "," . int($barpos+$conf{bwidth}) . "," . int($ypos+$dims{plotheight}+$floorby2+$bwidby4);
+        		$coords = int($barpos) . "," . int($centretopy-$bwidby4) . "," . int($barpos+$conf{bwidth}) . "," . int($ypos+$dims{plotheight}+$bwidby4);
         	}
         	# draw bars
         	else {
         		# draw main bar face
-        		my $centretopy = $ypos + ($dims{plotheight} - (($dims{plotheight}/$dims{range})*$d->[1])) + $floorby075;
-        		$image->filledRectangle($barpos,$centretopy,$barpos+$conf{bwidth},$ypos+$dims{plotheight}+$floorby075,$colbar);
+        		my $centretopy = $ypos + ($dims{plotheight} - (($dims{plotheight}/$dims{range})*$d->[1])) + $floordepth;
+        		$image->filledRectangle($barpos,$centretopy,$barpos+$conf{bwidth},$ypos+$dims{plotheight}+$floordepth,$colbar);
         		# draw top and side sections
         		my $poly = new GD::Polygon;
         		$poly->addPt($barpos,$centretopy);
@@ -241,18 +239,18 @@ sub creategraph {
         		$image->filledPolygon($poly,$shadetop);
         		my $poly = new GD::Polygon;
         		$poly->addPt($barpos+$floordepth+$conf{bwidth},$centretopy-$floordepth);
-        		$poly->addPt($barpos+$floordepth+$conf{bwidth},($ypos+$dims{plotheight}+$floorby075-$floordepth));
-        		$poly->addPt($barpos+$conf{bwidth},$ypos+$dims{plotheight}+$floorby075);
+        		$poly->addPt($barpos+$floordepth+$conf{bwidth},($ypos+$dims{plotheight}));
+        		$poly->addPt($barpos+$conf{bwidth},$ypos+$dims{plotheight}+$floordepth);
         		$poly->addPt($barpos+$conf{bwidth},$centretopy);
         		$image->filledPolygon($poly,$shadeside);
-        		$coords = int($barpos) . "," . int($centretopy-$floordepth) . "," . int($barpos+$conf{bwidth}+$spacing) . "," . int($ypos+$dims{plotheight}+$floorby075);
+        		$coords = int($barpos) . "," . int($centretopy-$floordepth) . "," . int($barpos+$conf{bwidth}+$spacing) . "," . int($ypos+$dims{plotheight}+$floordepth);
         	}
         	# create imagemap shape
         	$shapes .= $areatag;
         	$shapes =~ s/%coords%/$coords/;
         	$shapes =~ s/%title%/$d->[0]: $d->[1]/;
         	# increment xpos for next bar
-        	$barpos += ($conf{bwidth} + $spacing);	
+        	$barpos += ($conf{bwidth} + $spacing);
         }
         
         # finish imagemap html
@@ -527,7 +525,7 @@ sub creategraph {
 		$conf{bwidth} += 1 if $conf{bwidth} =~ /[02468]$/ and $conf{bstyle} eq "column";
 
 		# floor/side sizes
-		my $floorwidth = $conf{bwidth}*1.5;
+		my $floorwidth = $conf{bwidth}*1.25;
 		$dims{floor} = sprintf("%.0f",sqrt(($floorwidth*$floorwidth)/2));
 		$dims{minheight} += $dims{floor};
 		$dims{minwidth} += $dims{floor};
@@ -855,7 +853,7 @@ There aren't any known ones but feel free to report any you find and I may
 
 =head1 AUTHOR
 
-3DBarGrapher is copyright (c) 2007 S.I.Warhurst and is distributed under the
+3DBarGrapher is copyright (c) 2008 S.I.Warhurst and is distributed under the
 same terms and conditions as Perl itself. See the Perl Artistic license:
 
 http://www.perl.com/language/misc/Artistic.html
