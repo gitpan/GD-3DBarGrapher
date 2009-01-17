@@ -13,7 +13,7 @@ my @data = (
 );
 
 my %options = (
-      'file' => '/mygraph.jpg',
+      'file' => 'mygraph.jpg',
 );
 
 my $imagemap = creategraph(\@data, \%options);

@@ -49,14 +49,14 @@ This module requires these other modules and libraries:
 
 AUTHOR
 
-S.I.Warhurst <swarhurst@cpan.org>
+S.I.Warhurst <swarhurst _AT_ cpan.org>
 
 http://www.creationfactor.net
 
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2007 S.I.Warhurst
+Copyright (C) 2009 S.I.Warhurst
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself. See:
